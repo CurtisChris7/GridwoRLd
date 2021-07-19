@@ -40,7 +40,8 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
 
     debug_level : int, optional
         Determines the level of granularity that should be used when debugging during training with 0
-        being no messages to three representing every action taken.
+        being no messages one representing just some metadata on a per episode basis and two being
+        the updates occuring within the steps of each episode
 
     Returns
     -------
