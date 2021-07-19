@@ -10,13 +10,13 @@ REWARD = -1
 
 # Schema used for creating a gridlworld
 GRIDWORLD_SCHEMA = [
-    [(UNUSED, 10)],
-    [(UNUSED, 10)],
-    [(UNUSED, 10)],
-    [(START, 1), (UNUSED, 6), (GOAL, 1), (UNUSED, 2)],
-    [(UNUSED, 10)],
-    [(UNUSED, 10)],
-    [(UNUSED, 10)],
+    [(OPEN, 10)],
+    [(OPEN, 10)],
+    [(OPEN, 10)],
+    [(START, 1), (OPEN, 6), (GOAL, 1), (OPEN, 2)],
+    [(OPEN, 10)],
+    [(OPEN, 10)],
+    [(OPEN, 10)],
 ]
 
 # Maps the displacement due to wind by column
