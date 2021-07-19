@@ -26,7 +26,3 @@ def argmax(dic: dict, values: list):
             max_ = new_val
             val = v
     return val
-
-
-def testPolicy():
-    return

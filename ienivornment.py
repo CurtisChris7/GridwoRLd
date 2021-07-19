@@ -99,6 +99,31 @@ class IEnvironment(ABC):
         pass
 
     @abstractmethod
+    def generateGreedyActionFromQValues(self, state, q: dict, e: float):
+        """
+        Description
+        ----------
+        Gets an action from a given state in an e-greedy manner
+
+        Parameters
+        ----------
+        state : any
+            The given state we want to advance from
+
+        q : dict
+            The dictionary mapping state action pairs to values
+
+        e : float
+            Likelyhood of taking a random action
+
+        Returns
+        -------
+        any
+            The 'optimal' action or a random one
+        """
+        pass
+
+    @abstractmethod
     def getRewardFromAction(self, state, action) -> float:
         """
         Description

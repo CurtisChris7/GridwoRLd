@@ -1,12 +1,13 @@
 from absgridworld import AbsGridworld
 import gridworld_constants
 import random
+import util
 
 
 class Racetrack(AbsGridworld):
     """Class representing a gridworld style racetrack"""
 
-    def __init__(self, schema: list, maxVelocity: int, actions: list, stepPenalty: float, failPentality: float) -> None:
+    def __init__(self, schema: list, maxVelocity: int, actions: list, stepPenalty: float, failPenalty: float) -> None:
         """
         Description
         ----------
@@ -17,12 +18,23 @@ class Racetrack(AbsGridworld):
         ----------
         schema : list
             The schema used
+
+        maxVelocity : int
+            The maximum velocity in any direction that an agent can move in any direction
+
+        actions : list
+            A list of all possible actions that can be taken
+
+        stepPenalty : float
+            The penalty for taking an action
+
+        failPenalty : float
+            The penalty for taking a failing action
         """
-        super().__init__(schema)
+        super().__init__(schema, actions)
         self.maxVelocity = maxVelocity
-        self.actions = actions
         self.stepPenalty = stepPenalty
-        self.failPenalty = failPentality
+        self.failPenalty = failPenalty
 
     """OVERLOADED METHODS"""
 
@@ -66,23 +78,6 @@ class Racetrack(AbsGridworld):
 
         return new_state
 
-    def generateGreedyAction(self, state, π: dict, e: float):
-        actions = self.getAvailableActions(state)
-        action = None
-        best_action = π[state]
-
-        if random.uniform(0, 1) > e:
-            if best_action in actions:
-                action = best_action
-                prob = 1 - e + (e / len(actions))
-            else:
-                action = random.choice(actions)
-                prob = (e / len(actions))
-        else:
-            action = random.choice(actions)
-            prob = 1 / len(actions)
-        return action, prob
-
     def getRewardFromAction(self, state, action) -> float:
         new_state = self._getNewstate(state, action)
 
@@ -106,32 +101,9 @@ class Racetrack(AbsGridworld):
             policy_probs[(action, state)] = prob
             state_action_pairs.append((state, action))
             new_state = self.step(state, action)
-
-            # print((state, action), policy_probs[(
-            #    action, state)], " -> ", new_state)
-
             state = new_state
 
         return state_action_pairs, policy_probs
-
-    def goalTest(self, state) -> bool:
-        return state in self.getGoalStates()
-
-    def getStartState(self):
-        states = []
-        for row in range(len(self.gridworld)):
-            for col in range(len(self.gridworld[row])):
-                if self.gridworld[row][col] == gridworld_constants.START:
-                    states.append((row, col))
-        return random.choice(states)
-
-    def getGoalStates(self) -> list:
-        states = []
-        for row in range(len(self.gridworld)):
-            for col in range(len(self.gridworld[row])):
-                if self.gridworld[row][col] == gridworld_constants.GOAL:
-                    states.append((row, col))
-        return states
 
     """PRIVATE HELPER METHODS BELOW"""
 
