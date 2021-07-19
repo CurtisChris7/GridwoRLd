@@ -2,7 +2,7 @@ import argparse
 from simulation_constants import EPISODE_COUNT, E
 import algorithms.mc as mc
 import racetrack
-import demo_racetrack_data
+import demo_constants.demo_racetrack_data as data
 
 # Script arguments
 run_demo_test = False
@@ -13,8 +13,8 @@ output_filename = "output.py"
 episode_count = EPISODE_COUNT
 debug_level = 1
 
-env = racetrack.Racetrack(demo_racetrack_data.DEMO_RACETRACK_SCHEMA, demo_racetrack_data.MAX_VELOCITY,
-                          demo_racetrack_data.ACTIONS, demo_racetrack_data.REWARD, demo_racetrack_data.FAIL_REWARD)
+env = racetrack.Racetrack(data.DEMO_RACETRACK_SCHEMA,
+                          data.MAX_VELOCITY, data.ACTIONS, data.REWARD, data.FAIL_REWARD)
 
 
 def parse_args():
@@ -95,7 +95,7 @@ def train_policy():
     """
     # Training takes place here
     result = mc.off_policy(
-        env, episode_count, demo_racetrack_data.DISCOUNT, E, debug_level)
+        env, episode_count, data.DISCOUNT, E, debug_level)
 
     if display_policy:
         print(result)

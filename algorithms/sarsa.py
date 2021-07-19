@@ -57,8 +57,10 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
 
         while not state in goals and not new_state in goals:
             action = env.generateGreedyActionFromQValues(state, Q, e)
+
             if debug >= 2:
                 print(state, action)
+
             pairs.append((state, action))
             new_state = env.step(state, action)
 
@@ -72,12 +74,14 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
             state = new_state
             action = new_action
             pairs.append((state, action))
+
             if debug >= 2:
                 print(new_state, new_action)
 
         if debug >= 1:
             print("Action Count: ", len(pairs))
             print("------------------------------------------------")
+
         i += 1
 
     return Q
