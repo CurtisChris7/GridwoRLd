@@ -61,7 +61,7 @@ class AbsGridworld(IEnvironment):
         return action, prob
 
     def generateGreedyActionFromQValues(self, state, q: dict, e: float):
-        actions = self.getActions(state)
+        actions = self.getAvailableActions(state)
 
         max_val = float('-inf')
         action = actions[0]

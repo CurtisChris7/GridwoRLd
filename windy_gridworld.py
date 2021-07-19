@@ -68,7 +68,7 @@ class WindyGridworld(AbsGridworld):
 
         episode = []
         while not pos in goals:
-            action = self.generateGreedyAction(pos, π, e)[0]
+            action = self.generateGreedyActionFromQValues(pos, π, e)
             episode.append((pos, action))
             pos = self.step(pos, action)
         return episode

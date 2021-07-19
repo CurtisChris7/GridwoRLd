@@ -39,7 +39,7 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
     """
     Q = {}  # Maps state action pairs to values
     for s in env.getStates():
-        for a in env.getActions(s):
+        for a in env.getActions():
             # All are initialized randomly
             Q[(s, a)] = random.uniform(0.0, 1.0)
 

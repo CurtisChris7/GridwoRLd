@@ -77,10 +77,10 @@ def run_demo():
     ----------
     Runs a demo of the policy stored in demo_policy.py
     """
-    from demo_policies.demo_racetrack_policy import POLICY
-    # from output import POLICY
+    #from demo_policies.demo_racetrack_policy import POLICY
+    from output import POLICY
 
-    episode = env.generateEpisode(POLICY, 0)[0]
+    episode = env.generateEpisode(POLICY, 0)
     for pair in episode:
         print(pair)
     print("EPISODE LENGTH:", len(episode))
@@ -94,7 +94,8 @@ def train_policy():
     Handles the actual learning for the policy
     """
     # Training takes place here
-    result = sarsa(env, episode_count, data.DISCOUNT, E, debug_level)
+    result = sarsa(env, data.DISCOUNT, data.ALPHA,
+                   E, episode_count, debug_level)
 
     if display_policy:
         print(result)

@@ -1,4 +1,4 @@
-from demo_constants.demo_racetrack_data import REWARD
+from demo_constants.demo_racetrack_data import DISCOUNT, REWARD
 from gridworld_constants import *
 
 # All possible actions
@@ -7,6 +7,9 @@ ACTIONS = [(-1, -1), (-1, 0), (0, -1), (-1, 1),
 
 # Constant step penalty
 REWARD = -1
+
+DISCOUNT = 1
+ALPHA = 0.05
 
 # Schema used for creating a gridlworld
 GRIDWORLD_SCHEMA = [
