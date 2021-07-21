@@ -1,7 +1,5 @@
 from absgridworld import AbsGridworld
 import gridworld_constants
-import random
-import util
 
 
 class Racetrack(AbsGridworld):
@@ -50,6 +48,10 @@ class Racetrack(AbsGridworld):
 
         return states
 
+    def getStartState(self):
+        state = super().getStartState()
+        return (state[0], state[1], 0, 0)
+
     def getAvailableActions(self, state) -> list:
         x = state[2]
         y = state[3]
@@ -63,18 +65,17 @@ class Racetrack(AbsGridworld):
                 actions.append(a)
         return actions
 
-    def getActions(self) -> list:
-        return self.actions
-
     def step(self, state, action):
         new_state = self._getNewstate(state, action)
 
         if not self._isTrajectoryInbounds(new_state, self.gridworld):
+            #print("STARTING OVER!")
             random_pos = self.getStartState()
             return (random_pos[0], random_pos[1], 0, 0)
 
-        if self._hasCrossed(state, action):
-            return None
+        intersections = self._getIntersections(state, action)
+        if len(intersections) > 0:
+            return intersections[0]
 
         return new_state
 
@@ -88,22 +89,6 @@ class Racetrack(AbsGridworld):
             return 0
 
         return self.stepPenalty
-
-    def generateEpisode(self, π: dict, e: float) -> list:
-        state_action_pairs = []
-        starting_pos = self.getStartState()
-        policy_probs = {}
-
-        state = (starting_pos[0], starting_pos[1], 0, 0)
-
-        while (state != None):
-            action, prob = self.generateGreedyAction(state, π, e)
-            policy_probs[(action, state)] = prob
-            state_action_pairs.append((state, action))
-            new_state = self.step(state, action)
-            state = new_state
-
-        return state_action_pairs, policy_probs
 
     """PRIVATE HELPER METHODS BELOW"""
 
@@ -128,7 +113,7 @@ class Racetrack(AbsGridworld):
         """
         return (state[0] - state[2], state[1] + state[3], state[2] + action[0], state[3] + action[1])
 
-    def _hasCrossed(self, state, action):
+    def _hasCrossed(self, state, action) -> bool:
         """
         Description
         ----------
@@ -162,7 +147,39 @@ class Racetrack(AbsGridworld):
 
         return len(intersections) > 0
 
-    def _isTrajectoryInbounds(self, state, racetrack):
+    def _getIntersections(self, state, action) -> list:
+        """
+        Description
+        ----------
+        Determines wether or not applying the action at the specified state would cross the finish-line
+
+        Parameters
+        ----------
+        racetrack : list of lists
+            Representation of the racetrack
+
+        state : tuple
+            Representation of the state
+
+        action : tuple
+            Representation of the action
+
+        Returns
+        -------
+        bool
+            Wether or not applying the action at the specified state would cross the finish-line
+        """
+        finish_line = self.getGoalStates()
+
+        new_state = self._getNewstate(state, action)
+        covered_rows = [i for i in range(new_state[0], state[0] + 1)]
+        covered_cols = [i for i in range(state[1], new_state[1] + 1)]
+        covered_cells = [(row, col)
+                         for row in covered_rows for col in covered_cols]
+
+        return [cell for cell in finish_line if cell in covered_cells]
+
+    def _isTrajectoryInbounds(self, state, racetrack) -> bool:
         """
         Description
         ----------

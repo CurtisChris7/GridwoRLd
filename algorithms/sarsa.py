@@ -53,6 +53,9 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
         new_state = state
         goals = env.getGoalStates()
 
+        if debug >= 2:
+            print(state, new_state)
+
         pairs = []
 
         while not state in goals and not new_state in goals:

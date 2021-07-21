@@ -1,6 +1,10 @@
 import argparse
-from simulation_constants import EPISODE_COUNT, E
+from simulation_constants import EPISODE_COUNT, E, ALPHA
 from algorithms.sarsa import sarsa
+
+#import racetrack
+#import demo_constants.demo_racetrack_data as data
+
 from windy_gridworld import WindyGridworld
 import demo_constants.demo_windy_gridworld_data as data
 
@@ -13,8 +17,14 @@ output_filename = "output.py"
 episode_count = EPISODE_COUNT
 debug_level = 1
 
+
 env = WindyGridworld(data.GRIDWORLD_SCHEMA, data.ACTIONS,
                      data.REWARD, data.COL_TO_WIND)
+
+"""
+env = racetrack.Racetrack(data.DEMO_RACETRACK_SCHEMA,
+                          data.MAX_VELOCITY, data.ACTIONS, data.REWARD, data.FAIL_REWARD)
+"""
 
 
 def parse_args():
@@ -78,9 +88,10 @@ def run_demo():
     Runs a demo of the policy stored in demo_policy.py
     """
     #from demo_policies.demo_racetrack_policy import POLICY
-    from output import POLICY
+    from demo_policies.windy_gridworld.demo_windy_gridworld_qvalue_policy import POLICY
+    #from output import POLICY
 
-    episode = env.generateEpisode(POLICY, 0)
+    episode = env.generateEpisodeFromQValues(POLICY, 0)
     for pair in episode:
         print(pair)
     print("EPISODE LENGTH:", len(episode))
@@ -94,7 +105,7 @@ def train_policy():
     Handles the actual learning for the policy
     """
     # Training takes place here
-    result = sarsa(env, data.DISCOUNT, data.ALPHA,
+    result = sarsa(env, data.DISCOUNT, ALPHA,
                    E, episode_count, debug_level)
 
     if display_policy:

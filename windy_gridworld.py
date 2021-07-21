@@ -48,9 +48,6 @@ class WindyGridworld(AbsGridworld):
                 actions.append(a)
         return actions
 
-    def getActions(self) -> list:
-        return self.actions
-
     def step(self, state, action):
         row = state[0]
         col = state[1]
@@ -61,14 +58,3 @@ class WindyGridworld(AbsGridworld):
 
     def getRewardFromAction(self, state, action) -> float:
         return self.stepPenalty
-
-    def generateEpisode(self, π: dict, e: float) -> list:
-        pos = self.getStartState()
-        goals = self.getGoalStates()
-
-        episode = []
-        while not pos in goals:
-            action = self.generateGreedyActionFromQValues(pos, π, e)
-            episode.append((pos, action))
-            pos = self.step(pos, action)
-        return episode

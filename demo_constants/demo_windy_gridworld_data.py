@@ -9,7 +9,6 @@ ACTIONS = [(-1, -1), (-1, 0), (0, -1), (-1, 1),
 REWARD = -1
 
 DISCOUNT = 1
-ALPHA = 0.05
 
 # Schema used for creating a gridlworld
 GRIDWORLD_SCHEMA = [

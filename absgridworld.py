@@ -43,6 +43,9 @@ class AbsGridworld(IEnvironment):
 
         self.actions = actions
 
+    def getActions(self) -> list:
+        return self.actions
+
     def generateGreedyAction(self, state, π: dict, e: float):
         actions = self.getAvailableActions(state)
         action = None
@@ -94,6 +97,36 @@ class AbsGridworld(IEnvironment):
                 if self.gridworld[row][col] == GOAL:
                     states.append((row, col))
         return states
+
+    def generateEpisode(self, π: dict, e: float) -> tuple:
+        episode = []
+        policy_probs = {}
+        goals = self.getGoalStates()
+
+        state = self.getStartState()
+
+        while (not state in goals):
+            action, prob = self.generateGreedyAction(state, π, e)
+            policy_probs[(action, state)] = prob
+            episode.append((state, action))
+            new_state = self.step(state, action)
+            state = new_state
+
+        return episode, policy_probs
+
+    def generateEpisodeFromQValues(self, q: dict, e: float) -> list:
+        episode = []
+
+        goals = self.getGoalStates()
+        state = self.getStartState()
+
+        while (not state in goals):
+            action = self.generateGreedyActionFromQValues(state, q, e)
+            episode.append((state, action))
+            new_state = self.step(state, action)
+            state = new_state
+
+        return episode
 
     def displayEnvironment(self):
         for row in self.gridworld:

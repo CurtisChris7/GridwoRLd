@@ -146,11 +146,34 @@ class IEnvironment(ABC):
         pass
 
     @abstractmethod
-    def generateEpisode(self, π: dict, e: float) -> list:
+    def generateEpisode(self, π: dict, e: float) -> tuple:
         """
         Description
         ----------
-        Gets the reward from applying a particular action at a given state
+        Simulates and captures an episode
+
+        Parameters
+        ----------
+        π : dict
+            The policy to be treated as optimal
+
+        e: float
+            The likelyhood of taking a random action
+
+        Returns
+        -------
+        tuple
+            The list of state-action pairs comprising the episode and
+            a dictionary mapping the state action pairs to likelihoods
+        """
+        pass
+
+    @abstractmethod
+    def generateEpisodeFromQValues(self, q: dict, e: float) -> list:
+        """
+        Description
+        ----------
+        Simulates and captures an episode
 
         Parameters
         ----------
@@ -163,7 +186,7 @@ class IEnvironment(ABC):
         Returns
         -------
         list
-            The reward for taking a particular action in a given state
+            The list of state-action pairs comprising the episode
         """
         pass
 
