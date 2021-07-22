@@ -14,7 +14,7 @@ train = False
 display_policy = False
 display_track = True
 output_filename = "output.py"
-episode_count = EPISODE_COUNT
+episode_count = 5 * EPISODE_COUNT
 debug_level = 1
 
 """

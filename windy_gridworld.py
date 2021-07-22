@@ -40,9 +40,9 @@ class WindyGridworld(AbsGridworld):
 
         actions = []
         for a in self.getActions():
-            new_row = row + a[0]
-            new_col = col + a[1]
-            if new_row < 0 or new_row >= self.rowCount or new_col < 0 or new_col >= self.colCount:
+            newRow = row + a[0]
+            newCol = col + a[1]
+            if newRow < 0 or newRow >= self.rowCount or newCol < 0 or newCol >= self.colCount:
                 pass
             else:
                 actions.append(a)
@@ -51,10 +51,10 @@ class WindyGridworld(AbsGridworld):
     def step(self, state, action):
         row = state[0]
         col = state[1]
-        new_row = max(row + action[0] - self.columnToWindMap[col], 0)
-        new_col = col + action[1]
+        newRow = max(row + action[0] - self.columnToWindMap[col], 0)
+        newCol = col + action[1]
 
-        return (new_row, new_col)
+        return (newRow, newCol)
 
     def getRewardFromAction(self, state, action) -> float:
         return self.stepPenalty

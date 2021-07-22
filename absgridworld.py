@@ -107,6 +107,7 @@ class AbsGridworld(IEnvironment):
 
         while (not state in goals):
             action, prob = self.generateGreedyAction(state, π, e)
+            #print(state, action)
             policy_probs[(action, state)] = prob
             episode.append((state, action))
             new_state = self.step(state, action)

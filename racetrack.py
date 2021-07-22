@@ -66,23 +66,23 @@ class Racetrack(AbsGridworld):
         return actions
 
     def step(self, state, action):
-        new_state = self._getNewstate(state, action)
+        newState = self._getNewstate(state, action)
 
-        if not self._isTrajectoryInbounds(new_state, self.gridworld):
+        if not self._isTrajectoryInbounds(newState, self.gridworld):
             #print("STARTING OVER!")
-            random_pos = self.getStartState()
-            return (random_pos[0], random_pos[1], 0, 0)
+            randomState = self.getStartState()
+            return (randomState[0], randomState[1], 0, 0)
 
         intersections = self._getIntersections(state, action)
         if len(intersections) > 0:
             return intersections[0]
 
-        return new_state
+        return newState
 
     def getRewardFromAction(self, state, action) -> float:
-        new_state = self._getNewstate(state, action)
+        newState = self._getNewstate(state, action)
 
-        if not self._isTrajectoryInbounds(new_state, self.gridworld):
+        if not self._isTrajectoryInbounds(newState, self.gridworld):
             return self.failPenalty
 
         if self._hasCrossed(state, action):
@@ -135,15 +135,15 @@ class Racetrack(AbsGridworld):
         bool
             Wether or not applying the action at the specified state would cross the finish-line
         """
-        finish_line = self.getGoalStates()
+        finishLine = self.getGoalStates()
 
-        new_state = self._getNewstate(state, action)
-        covered_rows = [i for i in range(new_state[0], state[0] + 1)]
-        covered_cols = [i for i in range(state[1], new_state[1] + 1)]
-        covered_cells = [(row, col)
-                         for row in covered_rows for col in covered_cols]
+        newState = self._getNewstate(state, action)
+        coveredRows = [i for i in range(newState[0], state[0] + 1)]
+        coveredCols = [i for i in range(state[1], newState[1] + 1)]
+        coveredCells = [(row, col)
+                        for row in coveredRows for col in coveredCols]
 
-        intersections = [cell for cell in finish_line if cell in covered_cells]
+        intersections = [cell for cell in finishLine if cell in coveredCells]
 
         return len(intersections) > 0
 
