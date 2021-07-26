@@ -2,7 +2,7 @@ from ienivornment import IEnvironment
 import random
 
 
-def nStepTD(env: IEnvironment, policy, discount: float, episode_count: int, alpha: float = 0.05, n: int = 1, epsilon: float = 0.1, use_td_sum=False):
+def nStepTD(env: IEnvironment, policy, discount: float, episode_count: int, alpha: float, n: int, epsilon: float, use_td_sum=False):
     """
 
     """
