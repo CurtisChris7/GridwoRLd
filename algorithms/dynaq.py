@@ -1,10 +1,17 @@
-def dyna_q(gridworld, alpha=0.1, episode_count=25, debug=0, n=50, epsilon=0.1, discount=0.95):
+from ienivornment import IEnvironment
+import random
+
+
+def dyna_q(env: IEnvironment, alpha=0.1, episode_count=25, debug=0, n=50, epsilon=0.1, discount=0.95):
+    """
+
+    """
     state_history = {}
     q = {}
     model = {}
 
-    for s in get_states(ROWS+1, COLS+1):
-        for a in ACTIONS:
+    for s in env.getStates():
+        for a in env.getActions():
             q[(s, a)] = random.uniform(0.0, 1.0)  # * 400 - 500
             model[(s, a)] = (0, None)
 
@@ -14,13 +21,13 @@ def dyna_q(gridworld, alpha=0.1, episode_count=25, debug=0, n=50, epsilon=0.1, d
             print("EPISODE:", ep)
 
         cntr = 0
-        state = get_starting_state(gridworld)
-        goals = get_goal_states(gridworld)
+        state = get_starting_state(env)
+        goals = get_goal_states(env)
 
         while not state in goals:
             cntr += 1
             action = generate_greedy_action(
-                state, q, gridworld, epsilon=epsilon)
+                state, q, env, epsilon=epsilon)
 
             if debug >= 3:
                 print(state, action)
@@ -36,7 +43,7 @@ def dyna_q(gridworld, alpha=0.1, episode_count=25, debug=0, n=50, epsilon=0.1, d
             if debug >= 3:
                 print("HISTORY:", state_history[state])
 
-            new_state = step(state, action, gridworld)
+            new_state = step(state, action, env)
             r = 1 if new_state in goals else REWARD
 
             q[(state, action)] += alpha * (r + discount *

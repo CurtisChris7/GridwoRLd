@@ -1,7 +1,14 @@
-def n_step(gridworld, policy, discount=1.0, episode_count=500000, alpha=0.05, n=1, epsilon=0.1, use_td_sum=False):
+from ienivornment import IEnvironment
+import random
+
+
+def nStepTD(env: IEnvironment, policy, discount: float, episode_count: int, alpha: float = 0.05, n: int = 1, epsilon: float = 0.1, use_td_sum=False):
+    """
+
+    """
     v = {}
     states = get_states(ROWS + 1, COLS + 1)
-    goals = get_goal_states(gridworld)
+    goals = get_goal_states(env)
     for s in states:
         v[s] = random.uniform(0.0, 1.0)
 
@@ -9,7 +16,7 @@ def n_step(gridworld, policy, discount=1.0, episode_count=500000, alpha=0.05, n=
         print("----------------------------------------------")
         print("EPISODE:", ep)
         episode = generate_episode(
-            gridworld, policy, epsilon=epsilon, include_terminal=True)
+            env, policy, epsilon=epsilon, include_terminal=True)
         print("EPISODE LENGTH:", len(episode))
         T = float('inf')
         t = 0
