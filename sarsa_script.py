@@ -88,7 +88,7 @@ def run_demo():
     Runs a demo of the policy stored in demo_policy.py
     """
     #from demo_policies.demo_racetrack_policy import POLICY
-    from demo_policies.windy_gridworld.demo_windy_gridworld_qvalue_policy import POLICY
+    from demo_policies.windy_gridworld.sarsa_policy import POLICY
     #from output import POLICY
 
     episode = env.generateEpisodeFromQValues(POLICY, 0)

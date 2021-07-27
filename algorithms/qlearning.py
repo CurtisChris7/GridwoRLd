@@ -68,8 +68,11 @@ def qLearning(env: IEnvironment, discount: float, alpha: float, e: float, episod
             pairs.append((state, action))
             new_state = env.step(state, action)
 
-            Q[(state, action)] += alpha * (env.getRewardFromAction(state, action) +
-                                           (discount * util.argmax(Q, env.getActions(new_state)) - Q[(state, action)]))
+            if new_state in goals:
+                break
+
+            Q[(state, action)] += alpha * (env.getRewardFromAction(state, action) + (discount *
+                                                                                     Q[util.argmax(Q, [(new_state, a) for a in env.getAvailableActions(new_state)])] - Q[(state, action)]))
             state = new_state
 
         if debug >= 1:

@@ -1,8 +1,9 @@
 from ienivornment import IEnvironment
 import random
+import util
 
 
-def dyna_q(env: IEnvironment, alpha=0.1, episode_count=25, debug=0, n=50, epsilon=0.1, discount=0.95):
+def dynaQ(env: IEnvironment, alpha: float, episode_count: int, n: int, epsilon: float, discount: float, debug: int):
     """
 
     """
@@ -43,11 +44,12 @@ def dyna_q(env: IEnvironment, alpha=0.1, episode_count=25, debug=0, n=50, epsilo
             if debug >= 3:
                 print("HISTORY:", state_history[state])
 
-            new_state = step(state, action, env)
-            r = 1 if new_state in goals else REWARD
+            new_state = env.step(state, action)
+            r = 1 if new_state in goals else env.getRewardFromAction(
+                state, action)
 
             q[(state, action)] += alpha * (r + discount *
-                                           q[argmax(q, [(new_state, a) for a in ACTIONS])] - q[(state, action)])
+                                           q[util.argmax(q, [(new_state, a) for a in env.getActions(new_state)])] - q[(state, action)])
             model[(state, action)] = (r, new_state)
 
             state = new_state
@@ -63,7 +65,7 @@ def dyna_q(env: IEnvironment, alpha=0.1, episode_count=25, debug=0, n=50, epsilo
                     print("OLD:", q[(s, a)])
                 (r, new_state) = model[(s, a)]
                 q[(s, a)] += alpha * (r + discount *
-                                      q[argmax(q, [(new_state, a) for a in ACTIONS])] - q[(s, a)])
+                                      q[util.argmax(q, [(new_state, a) for a in env.getActions(new_state)])] - q[(s, a)])
                 if debug >= 2:
                     print("NEW:", q[(s, a)])
 

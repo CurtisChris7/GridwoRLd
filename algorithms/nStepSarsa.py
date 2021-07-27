@@ -2,21 +2,20 @@ from ienivornment import IEnvironment
 import random
 
 
-def nStepTD(env: IEnvironment, policy, discount: float, episode_count: int, alpha: float = 0.05, n: int = 1, epsilon: float = 0.1, use_td_sum=False):
+def nStepTD(env: IEnvironment, policy, discount: float, episode_count: int, alpha: float, n: int, epsilon: float, use_td_sum=False):
     """
 
     """
     v = {}
-    states = get_states(ROWS + 1, COLS + 1)
-    goals = get_goal_states(env)
+    states = env.getStates()
+    goals = env.getGoalStates()
     for s in states:
         v[s] = random.uniform(0.0, 1.0)
 
     for ep in range(episode_count):
         print("----------------------------------------------")
         print("EPISODE:", ep)
-        episode = generate_episode(
-            env, policy, epsilon=epsilon, include_terminal=True)
+        episode = env.generateEpisode(env, policy, epsilon)
         print("EPISODE LENGTH:", len(episode))
         T = float('inf')
         t = 0
