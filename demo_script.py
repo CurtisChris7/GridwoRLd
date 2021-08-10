@@ -6,6 +6,8 @@ from simulation_constants import *
 
 from algorithms.sarsa import sarsa
 from algorithms.mc import off_policy
+from algorithms.qlearning import qLearning
+from algorithms.dynaq import dynaQ
 
 """
 from racetrack import Racetrack
@@ -13,7 +15,17 @@ import demo_constants.demo_racetrack_data as data
 
 from windy_gridworld import WindyGridworld
 import demo_constants.demo_windy_gridworld_data as data
+
+from maze_gridworld import MazeGridWorld
+import demo_constants.demo_maze_data as data
+
+from complex_gridworld import ComplexGirdworld
+import demo_constants.demo_complex_gridworld_data as data
+
+from blackjack import Blackjack
+import demo_constants.demo_blackjack_data as data
 """
+
 # Script arguments
 run_demo_test = False
 train = False
@@ -25,7 +37,6 @@ debug_level = 1
 algorithm_option = 0
 enviornment_option = 0
 
-#
 data = None
 env = None
 
@@ -33,13 +44,14 @@ env = None
 RACETRACK_OPTION = 1
 WINDYGRIDWORLD_OPTION = 2
 WALLEDGRIDWORLD_OPTION = 3
+COMPEX_GRIDWORLD_OPTION = 4
+BLACKJACK_OPTION = 5
 
 # Algorithm Enumeration Constants
 MC_OPTION = 1
 SARSA_OPTION = 2
-TD0_OPTION = 3
-N_STEP_OPTION = 4
-DYNAQ_OPTION = 5
+QLEARNING_OPTION = 3
+DYNAQ_OPTION = 4
 
 """
 env = WindyGridworld(data.GRIDWORLD_SCHEMA, data.ACTIONS,
@@ -133,11 +145,13 @@ def run_demo():
             from demo_policies.racetrack.mc_policy import POLICY
         elif algorithm_option == SARSA_OPTION:
             from demo_policies.racetrack.sarsa_policy import POLICY
+
     elif enviornment_option == WINDYGRIDWORLD_OPTION:
         if algorithm_option == MC_OPTION:
             from demo_policies.windy_gridworld.mc_policy import POLICY
         elif algorithm_option == SARSA_OPTION:
             from demo_policies.windy_gridworld.sarsa_policy import POLICY
+
     # elif enviornment_option == WALLEDGRIDWORLD_OPTION:
 
     episode = env.generateEpisodeFromQValues(POLICY, 0)
@@ -160,11 +174,9 @@ def train_policy():
         result = off_policy(env, episode_count, DISCOUNT, E, debug_level)
     elif algorithm_option == SARSA_OPTION:
         result = sarsa(env, DISCOUNT, ALPHA, E, episode_count, debug_level)
-
+    elif algorithm_option == QLEARNING_OPTION:
+        result = qLearning(env, )
     """
-    elif algorithm_option == TD0_OPTION:
-
-    elif algorithm_option == N_STEP_OPTION:
 
     elif algorithm_option == DYNAQ_OPTION:
     """

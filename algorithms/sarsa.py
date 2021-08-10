@@ -50,36 +50,35 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
             print("EPISODE:", i)
 
         state = env.getStartState()
-        new_state = state
-        goals = env.getGoalStates()
+        newState = state
 
         if debug >= 2:
-            print(state, new_state)
+            print(state, newState)
 
         pairs = []
 
-        while not state in goals and not new_state in goals:
+        while not env.goalTest(state) and not env.goalTest(newState):
             action = env.generateGreedyActionFromQValues(state, Q, e)
 
             if debug >= 2:
                 print(state, action)
 
             pairs.append((state, action))
-            new_state = env.step(state, action)
+            newState = env.step(state, action)
 
-            if new_state in goals:
+            if env.goalTest(newState):
                 break
 
-            new_action = env.generateGreedyActionFromQValues(new_state, Q, e)
+            new_action = env.generateGreedyActionFromQValues(newState, Q, e)
 
             Q[(state, action)] += alpha * (env.getRewardFromAction(state, action) + (discount *
-                                                                                     Q[(new_state, new_action)]) - Q[(state, action)])
-            state = new_state
+                                                                                     Q[(newState, new_action)]) - Q[(state, action)])
+            state = newState
             action = new_action
             pairs.append((state, action))
 
             if debug >= 2:
-                print(new_state, new_action)
+                print(newState, new_action)
 
         if debug >= 1:
             print("Action Count: ", len(pairs))

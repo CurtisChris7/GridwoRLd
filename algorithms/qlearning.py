@@ -52,28 +52,27 @@ def qLearning(env: IEnvironment, discount: float, alpha: float, e: float, episod
 
         state = env.getStartState()
         new_state = state
-        goals = env.getGoalStates()
 
         if debug >= 2:
             print(state, new_state)
 
         pairs = []
 
-        while not state in goals:
+        while not env.goalTest(state):
             action = env.generateGreedyActionFromQValues(state, Q, e)
 
             if debug >= 2:
                 print(state, action)
 
             pairs.append((state, action))
-            new_state = env.step(state, action)
+            newState = env.step(state, action)
 
-            if new_state in goals:
+            if env.goalTest(newState):
                 break
 
             Q[(state, action)] += alpha * (env.getRewardFromAction(state, action) + (discount *
-                                                                                     Q[util.argmax(Q, [(new_state, a) for a in env.getAvailableActions(new_state)])] - Q[(state, action)]))
-            state = new_state
+                                                                                     Q[util.argmax(Q, [(newState, a) for a in env.getAvailableActions(newState)])] - Q[(state, action)]))
+            state = newState
 
         if debug >= 1:
             print("Action Count: ", len(pairs))
