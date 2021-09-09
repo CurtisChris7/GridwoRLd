@@ -3,7 +3,7 @@ from ienivornment import IEnvironment
 import util
 
 
-def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float, debug_level: int = 0) -> dict:
+def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float, debugLevel: int = 0) -> dict:
     """
     Description
     ----------
@@ -38,7 +38,7 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
         Sigma value used in e-greedy exploration 
         (likelyhood of taking exploratory action in episode generation)
 
-    debug_level : int, optional
+    debugLevel : int, optional
         Determines the level of granularity that should be used when debugging during training with 0
         being no messages one representing just some metadata on a per episode basis and two being
         the updates occuring within the steps of each episode
@@ -67,17 +67,17 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
 
     # We perform the desired amount of episodes for training
     for i in range(episode_count):
-        if debug_level >= 1:
+        if debugLevel >= 1:
             print("--------------------------------------------")
             print("Generating Episode", i)
 
         # Generate an episode
-        episode, policy_probs = env.generateEpisode(π, e)
+        episode, policyProbs = env.generateEpisode(π, e)
 
         G = 0
         W = 1
 
-        if debug_level >= 1:
+        if debugLevel >= 1:
             print("Episode", i, "Length", len(episode))
 
         cntr = 0  # Used for keeping track of how long until the episode terminates
@@ -97,25 +97,25 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
 
             # We find and store the best available action as determined by q
             actions = env.getAvailableActions(s)
-            best_action = util.argmax(q, [(s, action)
-                                          for action in actions])[1]
-            π[s] = best_action
+            bestAction = util.argmax(q, [(s, action)
+                                         for action in actions])[1]
+            π[s] = bestAction
 
-            if debug_level >= 2:
+            if debugLevel >= 2:
                 print("t:", t, "c[(s, a)]:", c[(s, a)], "q[(s, a)]:",
                       q[(s, a)], "π[s]", π[s])
                 print([((s, action), q[(s, action)]) for action in actions])
 
             # If the best action was not taken we break early
             if a != π[s]:
-                if debug_level >= 1:
+                if debugLevel >= 1:
                     print("BREAK", cntr)
                     print("--------------------------------------------")
                 break
 
             # Updates weight
-            W /= policy_probs[(a, s)]
-            if debug_level >= 2:
+            W /= policyProbs[(a, s)]
+            if debugLevel >= 2:
                 print("W", W)
                 print("--------------------------------------------")
 

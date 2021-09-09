@@ -1,17 +1,18 @@
 from ienivornment import IEnvironment
 import random
+import util
 
 
-def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_count: int, debug: int):
+def qLearning(env: IEnvironment, discount: float, alpha: float, e: float, episode_count: int, debug: int):
     """
     Description
     ----------
-    Implementation of sarsa
+    Implementation of qLearning
 
     Parameters
     ----------
     env : IEnvironment
-        Representation of the environment, doesn't actually need to be of any particular type, but 
+        Representation of the environment, doesn't actually need to be of any particular type, but
         in this example the girdworld we use is of this type.
 
     episode_count : int
@@ -24,7 +25,7 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
         Step factor
 
     e : float
-        Sigma value used in e-greedy exploration 
+        Sigma value used in e-greedy exploration
         (likelyhood of taking exploratory action in episode generation)
 
     debug_level : int, optional
@@ -50,14 +51,14 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
             print("EPISODE:", i)
 
         state = env.getStartState()
-        newState = state
+        new_state = state
 
         if debug >= 2:
-            print(state, newState)
+            print(state, new_state)
 
         pairs = []
 
-        while not env.goalTest(state) and not env.goalTest(newState):
+        while not env.goalTest(state):
             action = env.generateGreedyActionFromQValues(state, Q, e)
 
             if debug >= 2:
@@ -69,16 +70,9 @@ def sarsa(env: IEnvironment, discount: float, alpha: float, e: float, episode_co
             if env.goalTest(newState):
                 break
 
-            new_action = env.generateGreedyActionFromQValues(newState, Q, e)
-
             Q[(state, action)] += alpha * (env.getRewardFromAction(state, action) + (discount *
-                                                                                     Q[(newState, new_action)]) - Q[(state, action)])
+                                                                                     Q[util.argmax(Q, [(newState, a) for a in env.getAvailableActions(newState)])] - Q[(state, action)]))
             state = newState
-            action = new_action
-            pairs.append((state, action))
-
-            if debug >= 2:
-                print(newState, new_action)
 
         if debug >= 1:
             print("Action Count: ", len(pairs))

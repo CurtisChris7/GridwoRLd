@@ -1,0 +1,3 @@
+HIT = 1
+FOLD = 0
+ACTIONS = [HIT, FOLD]
