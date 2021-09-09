@@ -2,11 +2,14 @@ import argparse
 from simulation_constants import EPISODE_COUNT, E, ALPHA
 from algorithms.qlearning import qLearning
 
-import racetrack
-import demo_constants.demo_racetrack_data as data
+#import racetrack
+#import demo_constants.demo_racetrack_data as data
 
 #from windy_gridworld import WindyGridworld
 #import demo_constants.demo_windy_gridworld_data as data
+
+from maze_gridworld import MazeGridWorld
+import demo_constants.demo_maze_data as data
 
 # Script arguments
 run_demo_test = False
@@ -20,10 +23,10 @@ debug_level = 1
 """
 env = WindyGridworld(data.GRIDWORLD_SCHEMA, data.ACTIONS,
                      data.REWARD, data.COL_TO_WIND)
-"""
-
 env = racetrack.Racetrack(data.DEMO_RACETRACK_SCHEMA,
                           data.MAX_VELOCITY, data.ACTIONS, data.REWARD, data.FAIL_REWARD)
+"""
+env = MazeGridWorld(data.DEMO_MAZE_SCHEMA, data.ACTIONS, data.FINISH_REWARD)
 
 
 def parse_args():
@@ -86,9 +89,9 @@ def run_demo():
     ----------
     Runs a demo of the policy stored in demo_policy.py
     """
-    #from demo_policies.demo_racetrack_policy import POLICY
-    #from demo_policies.windy_gridworld.sarsa_policy import POLICY
-    from output import POLICY
+    #from demo_policies.racetrack.qlearning_policy import POLICY
+    #from demo_policies.windy_gridworld.qlearning_policy import POLICY
+    from demo_policies.maze_gridworld.qlearning import POLICY
 
     episode = env.generateEpisodeFromQValues(POLICY, 0)
     for pair in episode:

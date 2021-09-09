@@ -36,4 +36,4 @@ class MazeGridWorld(AbsGridworld):
         return self.endReward if self.step(state, action) in self._goals else 0
 
     def getGoalStates(self) -> list:
-        return self._goals()
+        return self._goals

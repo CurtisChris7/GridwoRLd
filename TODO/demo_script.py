@@ -1,6 +1,3 @@
-"""
-
-"""
 import argparse
 from simulation_constants import *
 
@@ -126,6 +123,12 @@ def parse_args():
         global enviornment_option
         enviornment_option = args.enviornment
 
+    if enviornment_option == RACETRACK_OPTION:
+        from racetrack import Racetrack
+        import demo_constants.demo_racetrack_data as data
+        global env
+        env = Racetrack(data.DEMO_RACETRACK_SCHEMA, data.MAX_VELOCITY, data.ACTIONS, data.REWARD, data.FAIL_REWARD)
+
 
 def run_demo():
     """
@@ -139,12 +142,15 @@ def run_demo():
 
     episode = None
 
-    # We find the corresponding policy we need
+    # We find the corresponding environment and generated policy we need
     if enviornment_option == RACETRACK_OPTION:
         if algorithm_option == MC_OPTION:
             from demo_policies.racetrack.mc_policy import POLICY
         elif algorithm_option == SARSA_OPTION:
             from demo_policies.racetrack.sarsa_policy import POLICY
+        elif algorithm_option == SARSA_OPTION:
+            from demo_policies.racetrack.sarsa_policy import POLICY
+        
 
     elif enviornment_option == WINDYGRIDWORLD_OPTION:
         if algorithm_option == MC_OPTION:
@@ -175,15 +181,20 @@ def train_policy():
     elif algorithm_option == SARSA_OPTION:
         result = sarsa(env, DISCOUNT, ALPHA, E, episode_count, debug_level)
     elif algorithm_option == QLEARNING_OPTION:
-        result = qLearning(env, )
-    """
-
+        result = qLearning(env, DISCOUNT, ALPHA, E, episode_count, debug_level)
     elif algorithm_option == DYNAQ_OPTION:
-    """
+        result = dynaQ(env, ALPHA, episode_count, 50, E, DISCOUNT, debug_level)
 
+    # Early return
+    if result == None:
+        print("ERROR NO RESULT TO PROCESS -- ENSURE VALID TRAINING OPTION WAS CHOSEN")
+        return
+
+    # Displays map if requested
     if display_policy:
         print(result)
 
+    # Stores solution into target file
     if output_filename:
         with open(output_filename, 'w') as f:
             f.write("POLICY = " + str(result) + "\n")

@@ -1,3 +1,4 @@
+from demo_constants.demo_blackjack_data import *
 from ienivornment import IEnvironment
 
 
@@ -10,6 +11,8 @@ class Blackjack(IEnvironment):
         """
         super().__init__()
         self.sum = 0
+        self.playerScore = 0
+        self.enemyScore = 0
         self.actions = actions
         self._initDeck()
 
@@ -19,10 +22,12 @@ class Blackjack(IEnvironment):
         return
 
     def getAvailableActions(self, state) -> list:
-        return
+        if sum < 21:
+            return ACTIONS
+        return [FOLD]
 
     def getActions(self) -> list:
-        return
+        return ACTIONS
 
     def step(self, state, action):
         return

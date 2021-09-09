@@ -54,8 +54,8 @@ def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: f
 
             for i in range(n):
                 states = list(stateHistory.keys())
-                # if debug >= 2:
-                #    print("OBSERVED:", states)
+                if debug >= 3:
+                    print("OBSERVED:", states)
                 s = random.choice(states)
                 a = random.choice(stateHistory[s])
                 if debug >= 2:
