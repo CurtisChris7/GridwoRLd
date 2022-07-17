@@ -3,7 +3,7 @@ import random
 import util
 
 
-def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: float, discount: float, debug: int):
+def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: float, discount: float, debug: int = 0) -> dict:
     """
 
     """
