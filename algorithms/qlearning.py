@@ -3,7 +3,7 @@ import random
 import util
 
 
-def qLearning(env: IEnvironment, discount: float, alpha: float, e: float, episode_count: int, debug: int):
+def qLearning(env: IEnvironment, discount: float, alpha: float, e: float, episode_count: int, debug: int = 0) -> dict:
     """
     Description
     ----------
