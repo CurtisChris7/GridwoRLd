@@ -52,7 +52,7 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
     actions = env.getActions()  # All possible actions
     q = {}  # Stores values for all state action pairs
     c = {}  # Stores the cost of all actions
-    π = {}  # Stores the best action for all states
+    bestActions = {}  # Stores the best action for all states
 
     # Initialization step
     for s in states:
@@ -63,7 +63,7 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
             c[k] = 0  # We set the cost
 
         # The best action is chosen and mapped
-        π[s] = util.argmax(q, [(s, a) for a in actions])[1]
+        bestActions[s] = util.argmax(q, [(s, a) for a in actions])[1]
 
     # We perform the desired amount of episodes for training
     for i in range(episode_count):
@@ -72,7 +72,7 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
             print("Generating Episode", i)
 
         # Generate an episode
-        episode, policyProbs = env.generateEpisode(π, e)
+        episode, policyProbs = env.generateEpisode(bestActions, e)
 
         G = 0
         W = 1
@@ -99,15 +99,15 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
             actions = env.getAvailableActions(s)
             bestAction = util.argmax(q, [(s, action)
                                          for action in actions])[1]
-            π[s] = bestAction
+            bestActions[s] = bestAction
 
             if debugLevel >= 2:
                 print("t:", t, "c[(s, a)]:", c[(s, a)], "q[(s, a)]:",
-                      q[(s, a)], "π[s]", π[s])
+                      q[(s, a)], "bestActions[s]", bestActions[s])
                 print([((s, action), q[(s, action)]) for action in actions])
 
             # If the best action was not taken we break early
-            if a != π[s]:
+            if a != bestActions[s]:
                 if debugLevel >= 1:
                     print("BREAK", cntr)
                     print("--------------------------------------------")
@@ -119,4 +119,4 @@ def off_policy(env: IEnvironment, episode_count: int, discount: float, e: float,
                 print("W", W)
                 print("--------------------------------------------")
 
-    return π
+    return bestActions
