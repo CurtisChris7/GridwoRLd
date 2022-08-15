@@ -5,7 +5,41 @@ import util
 
 def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: float, discount: float, debug: int = 0) -> dict:
     """
+    Description
+    ----------
+    Implementation of dynaQ
 
+    Parameters
+    ----------
+    env : IEnvironment
+        Representation of the environment, doesn't actually need to be of any particular type, but 
+        in this example the girdworld we use is of this type.
+
+    episode_count : int
+        The amount of episodes to be run when used in training
+
+    discount : float
+        Discount factor
+
+    alpha : float
+        Step factor
+
+    epsilon : float
+        Sigma value used in e-greedy exploration 
+        (likelyhood of taking exploratory action in episode generation)
+
+    n : int
+        The number of times to resample from history every action
+
+    debug_level : int, optional
+        Determines the level of granularity that should be used when debugging during training with 0
+        being no messages one representing just some metadata on a per episode basis and two being
+        the updates occuring within the steps of each episode
+
+    Returns
+    -------
+    dict
+        a dictionary of state-action pairs to values
     """
     stateHistory = {}
     q = {}
@@ -23,7 +57,6 @@ def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: f
 
         cntr = 0
         state = env.getStartState()
-        goals = env.getGoalStates()
 
         while not env.goalTest(state):
             cntr += 1
@@ -52,7 +85,7 @@ def dynaQ(env: IEnvironment, alpha: float, episodeCount: int, n: int, epsilon: f
 
             state = newState
 
-            for i in range(n):
+            for _ in range(n):
                 states = list(stateHistory.keys())
                 if debug >= 3:
                     print("OBSERVED:", states)
